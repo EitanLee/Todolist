@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TodoList</title>
+    <style>
+        *{padding: 0;margin: 0}
+        html{height: 100%;}
+        body{height:100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+        .container{
+            height: 600px;
+            width: 400px;
+            border: 2px solid red;
+        }
+        .header{
+            height: 200px;
+            width: 400px;
+            background-color: #ec6;
+            font-size: 50px;
+        }
+        .list{
+            height: 300px;
+            width: 400px;
+            background-color: antiquewhite;
+            display: flex;
+            justify-content: space-between;
+        }
+        .footer{
+            height: 100px;
+            width:400px;
+            background-color: #ec6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            }
+        .todolist{
+            border-radius: 5%;
+            width: 300px;
+            height: 40px;
+            border: 1px solid red;
+        }
+        li{
+            list-style: none;
+            font-size:40px;
+        }
+        button{
+            margin-left: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            ToDoList
+            <button id="clear">clear both</button>
+        </div>
+        <div class="list">
+            <ul id="list"></ul>
+        </div>
+        <div class="footer">
+            <input type="text" id="todoText" class="todolist" placeholder="Add a todolist">
+        </div>
+    </div>
+    <script>
+        var getId = function(id){
+            return document.getElementById(id);
+        }
+        var todoText= getId("todoText");
+        var list = getId("list");
+        var clear = getId('clear');
+        var itemnum=0;
+        var arr = [];
+        todoText.addEventListener('keyup',function(event){
+            if(event.keyCode === 13&&todoText.value!=""&&itemnum<=4){
+                var items = document.createElement('li');
+                items.setAttribute("id","li"+itemnum);
+                items.innerHTML="<input type='checkbox'></input>"+todoText.value+"<button id=btn"+itemnum+">Delete<button"
+                list.appendChild(items);
+                arr.push(items);
+                todoText.value="";
+                itemnum+=1;
+            }
+            if(itemnum>4){
+                todoText.placeholder="todo is full,Please to do and delete";
+            }else{
+                todoText.placeholder="Add a todolist";
+            }
+        });
+        
+        list.addEventListener('mouseover',function(){
+            for(let i=0;i<arr.length;i++){
+            var checkbox = arr[i].firstChild;
+            if(checkbox.checked){
+                arr[i].style.color = 'red';
+            }else{
+                arr[i].style.color = 'black';
+            }
+            var dele= arr[i].lastChild;
+            dele.onclick= function(){
+                list.removeChild(arr[i]);
+                itemnum-=1;
+                arr.splice(i,1);
+            }
+        }
+        })
+        clear.addEventListener('click',function(){
+            if(list.childNodes){
+            for(let i=0;i<arr.length;i++){
+                list.removeChild(arr[i]);
+                itemnum = 0;
+            }
+            arr=[];
+        }
+        })
+    </script>
+</body>
+</html>
